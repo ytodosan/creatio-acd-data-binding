@@ -206,6 +206,120 @@ namespace AcdDataBinding.Tests.DataBinding {
 			result.IsSuccess.Should().BeTrue(because: "the related records are selected by the filter");
 		}
 
+		[TestCase("SysSettings_Code-1")]
+		[TestCase("SysSettings Code")]
+		[TestCase("SysSettings_Code\n")]
+		[TestCase("Настройка")]
+		[Description("SaveBindings rejects binding names outside Latin letters, digits and underscores")]
+		public void SaveBindings_InvalidBindingName_ReturnsError(string name) {
+			// Arrange
+			BindingDefinition binding = Binding("SysSettings");
+			binding.Name = name;
+
+			// Act
+			Result<IReadOnlyList<BindingOutcome>> result =
+				_manager.SaveBindings(null, PackageUId, new List<BindingDefinition> { binding });
+
+			// Assert
+			result.Error.Should().Be(DataBindingManager.InvalidBindingNameMessage,
+				because: "data binding names are package element names");
+			_store.DidNotReceive().Save(Arg.Any<UserConnection>(), Arg.Any<Guid>(), Arg.Any<BindingDefinition>());
+		}
+
+		[Test]
+		[Description("SaveBindings rejects a binding name longer than the database column")]
+		public void SaveBindings_TooLongBindingName_ReturnsError() {
+			// Arrange
+			BindingDefinition binding = Binding("SysSettings");
+			binding.Name = new string('A', DataBindingManager.MaxBindingNameLength + 1);
+
+			// Act
+			Result<IReadOnlyList<BindingOutcome>> result =
+				_manager.SaveBindings(null, PackageUId, new List<BindingDefinition> { binding });
+
+			// Assert
+			result.Error.Should().Be(DataBindingManager.InvalidBindingNameMessage,
+				because: "SysPackageSchemaData.Name holds at most 250 characters");
+		}
+
+		[TestCase("Sys Settings")]
+		[TestCase("1SysSettings")]
+		[TestCase("SysSettings;DROP")]
+		[Description("SaveBindings rejects entity schema names that aren't identifiers")]
+		public void SaveBindings_InvalidSchemaName_ReturnsError(string schemaName) {
+			// Act
+			Result<IReadOnlyList<BindingOutcome>> result =
+				_manager.SaveBindings(null, PackageUId, new List<BindingDefinition> { Binding(schemaName) });
+
+			// Assert
+			result.Error.Should().Be(DataBindingManager.InvalidSchemaNameMessage,
+				because: "schema names are identifiers");
+		}
+
+		[Test]
+		[Description("SaveBindings rejects a filter column name that isn't an identifier")]
+		public void SaveBindings_InvalidFilterColumn_ReturnsError() {
+			// Arrange
+			var binding = new BindingDefinition {
+				SchemaName = "SysSettingsValue",
+				Name = "SysSettingsValue_Code",
+				FilterColumnName = "SysSettings.Id",
+				FilterValue = Guid.NewGuid()
+			};
+
+			// Act
+			Result<IReadOnlyList<BindingOutcome>> result =
+				_manager.SaveBindings(null, PackageUId, new List<BindingDefinition> { binding });
+
+			// Assert
+			result.Error.Should().Be(DataBindingManager.InvalidFilterColumnMessage,
+				because: "the filter must name a column of the bound schema");
+		}
+
+		[Test]
+		[Description("SaveBindings rejects more bindings than one request may contain")]
+		public void SaveBindings_TooManyBindings_ReturnsError() {
+			// Arrange
+			List<BindingDefinition> bindings = Enumerable.Range(0, DataBindingManager.MaxBindingsPerRequest + 1)
+				.Select(index => Binding("SysSettings")).ToList();
+
+			// Act
+			Result<IReadOnlyList<BindingOutcome>> result = _manager.SaveBindings(null, PackageUId, bindings);
+
+			// Assert
+			result.Error.Should().Be(DataBindingManager.TooManyBindingsMessage,
+				because: "the classic UI sends at most 3 bindings per action");
+			_store.DidNotReceive().Save(Arg.Any<UserConnection>(), Arg.Any<Guid>(), Arg.Any<BindingDefinition>());
+		}
+
+		[Test]
+		[Description("SaveBindings rejects a binding with more record ids than allowed")]
+		public void SaveBindings_TooManyRecordIds_ReturnsError() {
+			// Arrange
+			BindingDefinition binding = Binding("Lookup");
+			binding.RecordIds = Enumerable.Range(0, DataBindingManager.MaxRecordIdsPerBinding + 1)
+				.Select(index => Guid.NewGuid()).ToList();
+
+			// Act
+			Result<IReadOnlyList<BindingOutcome>> result =
+				_manager.SaveBindings(null, PackageUId, new List<BindingDefinition> { binding });
+
+			// Assert
+			result.Error.Should().Be(DataBindingManager.TooManyRecordsMessage,
+				because: "large selections should use all records instead of listing ids");
+		}
+
+		[Test]
+		[Description("GetPackages rejects a schema name that isn't an identifier")]
+		public void GetPackages_InvalidSchemaName_ReturnsError() {
+			// Act
+			Result<IReadOnlyList<BindingPackage>> result = _manager.GetPackages(null, "Sys'Settings");
+
+			// Assert
+			result.Error.Should().Be(DataBindingManager.InvalidSchemaNameMessage, because: "schema names are identifiers");
+			_packageProvider.DidNotReceive().GetAvailablePackages(Arg.Any<UserConnection>(), Arg.Any<string>());
+		}
+
 		[Test]
 		[Description("GetPackages checks the permission before listing packages")]
 		public void GetPackages_NoPermission_ReturnsError() {

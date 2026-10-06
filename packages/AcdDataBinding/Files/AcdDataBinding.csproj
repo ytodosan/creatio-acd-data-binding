@@ -42,7 +42,8 @@
 				<CoreLibPath Condition="'$(CoreLibPath)' == ''">$(RelativePkgFolderPath)/../..</CoreLibPath>
 				<MSBuildWarningsAsMessages Condition=" '$(Configuration)' == 'Release' ">MSB3277</MSBuildWarningsAsMessages>
 				<StandalonePackageAssemblyPath Condition="'$(StandalonePackageAssemblyPath)' == ''">Files/Bin/netstandard</StandalonePackageAssemblyPath>
-				<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+				<!-- Ship only AcdDataBinding.dll: every other assembly comes with the Creatio host. -->
+				<CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
 			</PropertyGroup>
 		</When>
 	</Choose>
@@ -273,7 +274,8 @@
 			<SpecificVersion>False</SpecificVersion>
 			<Private>False</Private>
 		</Reference>
-		<PackageReference Condition="'$(TargetFramework)' == 'netstandard2.0'" Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+		<!-- The .NET host provides Microsoft.Extensions.DependencyInjection: compile against it, don't ship it. -->
+		<PackageReference Condition="'$(TargetFramework)' == 'netstandard2.0'" Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" ExcludeAssets="runtime" PrivateAssets="all" />
 		<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
 			<HintPath>$(CoreLibPath)/Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
 			<SpecificVersion>False</SpecificVersion>
@@ -296,23 +298,6 @@
 		</Reference>
 		<Reference Include="System.Buffers">
 			<HintPath>$(CoreLibPath)/System.Buffers.dll</HintPath>
-			<SpecificVersion>False</SpecificVersion>
-			<Private>False</Private>
-		</Reference>
-		<Reference Condition="'$(TargetFramework)' == 'net472'" Include="Microsoft.Extensions.Http">
-			<HintPath>$(CoreLibPath)/Microsoft.Extensions.Http.dll</HintPath>
-			<SpecificVersion>False</SpecificVersion>
-			<Private>False</Private>
-		</Reference>
-		<PackageReference Condition="'$(TargetFramework)' == 'netstandard2.0'" Include="Microsoft.Extensions.Http" Version="8.0.0" />
-		<Reference Condition="'$(TargetFramework)' == 'net472'" Include="Microsoft.Extensions.Http">
-			<HintPath>$(CoreLibPath)/Microsoft.Extensions.Http.dll</HintPath>
-			<SpecificVersion>False</SpecificVersion>
-			<Private>False</Private>
-		</Reference>
-		<PackageReference Condition="'$(TargetFramework)' == 'netstandard2.0'" Include="System.Text.Json" Version="8.0.0" />
-		<Reference Condition="'$(TargetFramework)' == 'net472'" Include="System.Text.Json">
-			<HintPath>$(CoreLibPath)/System.Text.Json.dll</HintPath>
 			<SpecificVersion>False</SpecificVersion>
 			<Private>False</Private>
 		</Reference>

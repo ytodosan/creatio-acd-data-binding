@@ -19,3 +19,6 @@
 # We only keep en-US data
 **/data.??-??.json
 !**/data.en-US.json
+
+# Release archives (build-release.ps1)
+release/

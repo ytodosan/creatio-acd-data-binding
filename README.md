@@ -1,4 +1,7 @@
-# AcdDataBinding
+# Data binding for Classic UI
+
+Package `AcdDataBinding` · maintainer Creatio Academy · version 1.0.0 · minimum Creatio 10.0.0 ·
+see [CHANGELOG.md](CHANGELOG.md).
 
 Adds "Bind data" actions to Creatio **classic UI** system pages, so configuration data can be captured
 as data bindings in a user package. Works on **.NET Framework and .NET** Creatio.
@@ -78,3 +81,15 @@ clio restart -e <ENV> --wait-ready
 
 Then hard-reload the browser (Ctrl+Shift+R). Disable or remove GlbDataBinding first: both packages extend
 the same pages.
+
+## Release
+
+```powershell
+./build-release.ps1
+```
+
+It writes `release/Data-binding-for-Classic-UI-<X.Y.Z>.zip`, a Marketplace-ready archive with
+`AcdDataBinding.gz` at its root. Before a release, raise the version in **both**
+`packages/AcdDataBinding/descriptor.json` (`PackageVersion`) and `packages/AcdDataBinding/Files/app-descriptor.json`
+(`Version`), then add a `CHANGELOG.md` entry. The script stops if the two versions differ.
+The app icon source is `assets/app-icon.svg` (it's embedded in `app-descriptor.json`).
