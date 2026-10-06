@@ -57,3 +57,10 @@ Decision: The Bind workplace button is now a drop-down: "Bind new workplace" (on
 Discovery: Caveats told to the user: (1) the target package must depend on the app packages that provide the workplace and the sections; the tool can't add dependencies. (2) All of the workplace's sections are bound, including the vendor's own rows. They match on the SysWorkplace + SysModule key, so they don't duplicate, but forced Position means the package's order wins. A later improvement could let the user pick sections. SysLocalizableValue uses the column [Key] (not ResourceKey) for checking captions.
 Files: packages/AcdDataBinding/Schemas/AcdDataBindingMixin/{AcdDataBindingMixin.js,metadata.json}, packages/AcdDataBinding/Resources/AcdDataBindingMixin.ClientUnit/resource.en-US.xml, packages/AcdDataBinding/Schemas/SysWorkplacePageV2/SysWorkplacePageV2.js, packages/AcdDataBinding/Schemas/SysWorkplaceSectionV2/SysWorkplaceSectionV2.js, README.md
 Impact: Client-only change: pkg-to-db, no restart. Verified schema content and captions in the DB.
+
+## 2026-10-06 - Maintainer changed to Creatio Academy
+Context: Marketplace readiness: the package should be published under the "Creatio Academy" maintainer instead of the default "Customer". The Acd prefix already belongs to Creatio Academy.
+Decision: Changed descriptor.json Maintainer to "Creatio Academy" and did NOT run `clio unlock-package`: it rewrites Maintainer to the environment's value and stores the original in Description ("#OriginalMaintainer:..."), and through the L4R symlink a later 2fs would write that back into the repo.
+Discovery: `clio pkg-to-db` (FSM) didn't update SysPackage.Maintainer for the existing package: Y1DEV still shows Customer, InstallType 0. Risk: a pkg-to-file-system on Y1DEV can write "Customer" back into packages/AcdDataBinding/descriptor.json. Check `git diff` on descriptor.json after any 2fs.
+Files: packages/AcdDataBinding/descriptor.json
+Impact: The repo/package identity is Creatio Academy. Y1DEV's DB copy of the maintainer is pending the user's decision.
