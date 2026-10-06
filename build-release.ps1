@@ -1,12 +1,13 @@
 <#
 .SYNOPSIS
-    Builds the Creatio Marketplace release archive of the Data binding for Classic UI app.
+    Builds the Creatio Marketplace release archive of the Data Binding kit for Creatio app.
 
 .DESCRIPTION
     1. Checks that the app version (Files/app-descriptor.json) matches the package version (descriptor.json).
     2. Builds AcdDataBinding.dll for .NET Framework (dev-nf) and .NET (dev-n8).
     3. Packs a clean copy of the package (no obj, *.pdb or *.deps.json) into AcdDataBinding.gz with clio.
-    4. Puts the .gz at the root of release/<App-name>-<X.Y.Z>.zip, as Marketplace requires.
+    4. Puts the .gz at the root of release/<App-name>-<X.Y.Z>.zip, as Marketplace requires, and keeps a copy
+       as release/AcdDataBinding.gz for direct installs (clio push-pkg).
 
     Needs the reference binaries in .application/ (see README.md) and clio on PATH.
 #>
@@ -47,6 +48,9 @@ $zipName = "$(($app.Name -replace '\s+', '-'))-$($app.Version).zip"
 $zipPath = Join-Path $releaseDir $zipName
 if (Test-Path $zipPath) { Remove-Item $zipPath -Force }
 Compress-Archive -Path $gzPath -DestinationPath $zipPath
+$gzCopy = Join-Path $releaseDir "$packageName.gz"
+Copy-Item $gzPath $gzCopy -Force
 Remove-Item $stagingDir -Recurse -Force
 
 Write-Host "Release archive: $zipPath"
+Write-Host "Package archive: $gzCopy"

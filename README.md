@@ -1,4 +1,4 @@
-# Data binding for Classic UI
+# Data Binding kit for Creatio
 
 Package `AcdDataBinding` · maintainer Creatio Academy · version 1.0.0 · minimum Creatio 10.0.0 ·
 see [CHANGELOG.md](CHANGELOG.md).
@@ -88,8 +88,28 @@ the same pages.
 ./build-release.ps1
 ```
 
-It writes `release/Data-binding-for-Classic-UI-<X.Y.Z>.zip`, a Marketplace-ready archive with
-`AcdDataBinding.gz` at its root. Before a release, raise the version in **both**
+It writes `release/Data-Binding-kit-for-Creatio-<X.Y.Z>.zip`, a Marketplace-ready archive with
+`AcdDataBinding.gz` at its root, and a copy of `release/AcdDataBinding.gz` for direct installs. Before a release, raise the version in **both**
 `packages/AcdDataBinding/descriptor.json` (`PackageVersion`) and `packages/AcdDataBinding/Files/app-descriptor.json`
 (`Version`), then add a `CHANGELOG.md` entry. The script stops if the two versions differ.
 The app icon source is `assets/app-icon.svg` (it's embedded in `app-descriptor.json`).
+
+## Install a release on an environment
+
+Before you start: deactivate or remove GlbDataBinding if it's installed (both extend the same pages). The user
+who binds data needs the `CanManageSolution` system operation.
+
+**Application Hub:** Application Hub → New application → Install from file → select
+`Data-Binding-kit-for-Creatio-<X.Y.Z>.zip` → Install.
+
+**clio:**
+
+```bash
+clio push-pkg "release/Data-Binding-kit-for-Creatio-1.0.0.zip" -e <ENV>
+```
+
+Then restart the application so it loads `AcdDataBinding.dll` (`clio restart -e <ENV> --wait-ready`, or recycle
+the IIS application pool), and hard-reload the browser (Ctrl+Shift+R).
+
+Check: Application Hub lists "Data Binding kit for Creatio" 1.0.0. Lookups shows **Bind lookup**, a system
+setting page shows **Bind setting**, and a workplace shows **Bind workplace** with two options.

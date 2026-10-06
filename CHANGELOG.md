@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to **Data binding for Classic UI** (package `AcdDataBinding`, maintainer Creatio Academy).
+All notable changes to **Data Binding kit for Creatio** (package `AcdDataBinding`, maintainer Creatio Academy).
 Versions follow the X.Y.Z format required by Creatio Marketplace.
 
 ## 1.0.0 - 2026-10-06
