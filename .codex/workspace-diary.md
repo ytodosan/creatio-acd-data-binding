@@ -64,3 +64,10 @@ Decision: Changed descriptor.json Maintainer to "Creatio Academy" and did NOT ru
 Discovery: `clio pkg-to-db` (FSM) didn't update SysPackage.Maintainer for the existing package: Y1DEV still shows Customer, InstallType 0. Risk: a pkg-to-file-system on Y1DEV can write "Customer" back into packages/AcdDataBinding/descriptor.json. Check `git diff` on descriptor.json after any 2fs.
 Files: packages/AcdDataBinding/descriptor.json
 Impact: The repo/package identity is Creatio Academy. Y1DEV's DB copy of the maintainer is pending the user's decision.
+
+## 2026-10-06 - Y1DEV maintainer aligned to Creatio Academy
+Context: After the descriptor change, Y1DEV's SysPackage still said Customer, so a 2fs could write it back into the repo through the L4R symlink.
+Decision: With the user's approval, ran a direct SQL update of SysPackage.Maintainer to 'Creatio Academy' (matched by UId 2b598af8-...; 1 row), then restarted.
+Discovery: InstallType stays 0. A file-system import still applies under the new maintainer: a temporary marker comment in the mixin reached SysSchemaContent after pkg-to-db and disappeared after `git checkout` + pkg-to-db. pkg-to-db doesn't reset the maintainer. GetPackages still works. Don't use `clio unlock-package` on this package: it rewrites the maintainer to the environment's value.
+Files: none in the repo (environment-only change)
+Impact: Repo and Y1DEV agree on the maintainer, so a 2fs can't flip it back.
