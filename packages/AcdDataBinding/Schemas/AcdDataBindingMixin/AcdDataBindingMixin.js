@@ -15,31 +15,7 @@ define("AcdDataBindingMixin", ["AcdDataBindingMixinResources", "RightUtilities"]
 
 			_availablePackages: null,
 
-			/**
-			 * Marks the bind buttons as AcdDataBinding ones: same blue style and layout, rounder corners and a
-			 * slightly deeper shade, so they can't be confused with buttons of the old GlbDataBinding package.
-			 */
-			_styleSheetId: "acd-data-binding-style",
-
-			_styleSheet: [
-				".t-btn-wrapper.acd-data-binding-button {",
-				"  border-radius: 16px;",
-				"  overflow: hidden;",
-				"  filter: brightness(0.88);",
-				"}",
-				".t-btn-wrapper.acd-data-binding-button:hover {",
-				"  filter: brightness(0.8);",
-				"}"
-			].join(" "),
-
-			addDataBindingStyleSheet: function() {
-				if (!document.getElementById(this._styleSheetId)) {
-					Ext.util.CSS.createStyleSheet(this._styleSheet, this._styleSheetId);
-				}
-			},
-
 			init: function() {
-				this.addDataBindingStyleSheet();
 				RightUtilities.checkCanExecuteOperation({operation: "CanManageSolution"}, function(result) {
 					this.set("IsBindDataEnabled", result);
 				}, this);

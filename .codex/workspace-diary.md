@@ -36,3 +36,10 @@ Decision: Created a standalone clio workspace with only packages/AcdDataBinding 
 Discovery: The schema generator used during the port (pulled GlbDataBinding files -> generated schemas) wasn't kept. The schema files in packages/AcdDataBinding/Schemas are now the source; edit them directly. Local builds need .application/ (gitignored): net-framework/{core-bin,packages,bin} junctions into a .NET Framework Creatio, and net-core/core-bin with the CreatioSDK netstandard2.0 DLLs.
 Files: README.md, MainSolution.slnx, tests/UnitTests.slnx, .clio/workspaceSettings.json
 Impact: All future work on the data binding tool happens in this repository.
+
+## 2026-10-06 - Button styling reverted
+Context: A yellow !important test showed that only the "Bind data" button in a lookup's records section (BaseLookupConfigurationSection) picked up the extra wrapperClass. The other bind buttons rendered out of the box: the class didn't reach them.
+Decision: The user chose to drop the styling. The mixin and the 10 button schemas were restored to the unstyled versions from training repo commit 8311226 (no marker class, no stylesheet).
+Discovery: For most classic pages here, adding a class to the diff's "classes.wrapperClass" doesn't reach the rendered button. Only BaseLookupConfigurationSection honored it. Cause not investigated.
+Files: packages/AcdDataBinding/Schemas/AcdDataBindingMixin/AcdDataBindingMixin.js, packages/AcdDataBinding/Schemas/*/<schema>.js
+Impact: Buttons look like the platform defaults again. Revisit only if a reliable styling hook for these pages turns up.

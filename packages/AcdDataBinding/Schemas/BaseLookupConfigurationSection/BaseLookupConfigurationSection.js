@@ -14,7 +14,7 @@ define("BaseLookupConfigurationSection", [], function() {
 					"click": {"bindTo": "onBindLookupDataButtonClick"},
 					"classes": {
 						"textClass": ["actions-button-margin-right"],
-						"wrapperClass": ["actions-button-margin-right", "acd-data-binding-button"]
+						"wrapperClass": ["actions-button-margin-right"]
 					},
 					"menu": {
 						"items": [{

@@ -14,7 +14,7 @@ define("LookupSection", [], function() {
 					"click": {"bindTo": "onBindLookupButtonClick"},
 					"classes": {
 						"textClass": ["actions-button-margin-right"],
-						"wrapperClass": ["actions-button-margin-right", "acd-data-binding-button"]
+						"wrapperClass": ["actions-button-margin-right"]
 					},
 					"visible": {"bindTo": "getBindDataButtonVisible"}
 				}
