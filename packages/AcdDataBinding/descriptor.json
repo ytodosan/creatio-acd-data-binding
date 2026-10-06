@@ -1,0 +1,27 @@
+{
+  "Descriptor": {
+    "UId": "2b598af8-93f5-4daf-8e78-83c5c8a88cae",
+    "PackageVersion": "0.1.0",
+    "Name": "AcdDataBinding",
+    "Type": 1,
+    "ProjectPath": "Files/AcdDataBinding.csproj",
+    "ModifiedOnUtc": "\/Date(1790789962000)\/",
+    "Maintainer": "Customer",
+    "InstallBehavior": 1,
+    "DependsOn": [
+      {
+        "UId": "3a71e376-9ac3-3049-c62b-9c43b9abe054",
+        "PackageVersion": "7.8.0",
+        "Name": "CrtCoreBase",
+        "Type": 1
+      },
+      {
+        "UId": "613fd913-be03-46ce-909b-f44e4225469e",
+        "PackageVersion": "7.8.0",
+        "Name": "UIv2",
+        "Type": 1
+      }
+    ],
+    "Description": "Classic UI data binding (lookups, system settings, operations, roles, workplaces, column setup) for .NET Framework and .NET Creatio. Port of GlbDataBinding."
+  }
+}

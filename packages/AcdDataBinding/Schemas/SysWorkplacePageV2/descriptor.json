@@ -1,0 +1,15 @@
+﻿{
+  "Descriptor": {
+    "UId": "c4e8f909-3b8b-5717-8157-60dc429e5cde",
+    "Name": "SysWorkplacePageV2",
+    "ModifiedOnUtc": "\/Date(1791296303000)\/",
+    "Parent": {
+      "UId": "c422fc3b-d80c-40d0-854d-ffdf53d1921c",
+      "Name": "SysWorkplacePageV2"
+    },
+    "ExtendParent": true,
+    "ManagerName": "ClientUnitSchemaManager",
+    "Caption": "SysWorkplacePageV2",
+    "DependsOn": []
+  }
+}

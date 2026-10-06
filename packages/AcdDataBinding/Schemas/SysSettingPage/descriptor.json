@@ -1,0 +1,15 @@
+﻿{
+  "Descriptor": {
+    "UId": "44818cdb-32d6-5c2b-bc75-6daa44978e77",
+    "Name": "SysSettingPage",
+    "ModifiedOnUtc": "\/Date(1791296303000)\/",
+    "Parent": {
+      "UId": "ac5ba463-9cfa-4558-8b62-93e12710c840",
+      "Name": "SysSettingPage"
+    },
+    "ExtendParent": true,
+    "ManagerName": "ClientUnitSchemaManager",
+    "Caption": "Card page - System setting",
+    "DependsOn": []
+  }
+}

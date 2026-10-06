@@ -1,0 +1,15 @@
+﻿{
+  "Descriptor": {
+    "UId": "5ecf9114-b1af-5425-9966-ae05ae484cc0",
+    "Name": "LookupEditPage",
+    "ModifiedOnUtc": "\/Date(1791296303000)\/",
+    "Parent": {
+      "UId": "930d0f81-b25f-464f-b533-40c2d58dc312",
+      "Name": "LookupEditPage"
+    },
+    "ExtendParent": true,
+    "ManagerName": "ClientUnitSchemaManager",
+    "Caption": "Section edit page schema - \"Lookup\"",
+    "DependsOn": []
+  }
+}

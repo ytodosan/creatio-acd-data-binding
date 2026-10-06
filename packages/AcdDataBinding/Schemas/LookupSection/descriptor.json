@@ -1,0 +1,15 @@
+﻿{
+  "Descriptor": {
+    "UId": "a5ee78b6-8fa5-5aa9-b43c-e3e0cb290b54",
+    "Name": "LookupSection",
+    "ModifiedOnUtc": "\/Date(1791296303000)\/",
+    "Parent": {
+      "UId": "c4f3f339-d146-40ca-8166-1b4613764020",
+      "Name": "LookupSection"
+    },
+    "ExtendParent": true,
+    "ManagerName": "ClientUnitSchemaManager",
+    "Caption": "Section page schema - Lookup",
+    "DependsOn": []
+  }
+}

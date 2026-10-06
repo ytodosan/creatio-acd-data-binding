@@ -1,0 +1,10 @@
+﻿{
+  "Descriptor": {
+    "UId": "c6fe3061-9604-5500-8c50-f3a0e5a4cfcc",
+    "Name": "AcdDataBindingMixin",
+    "ModifiedOnUtc": "\/Date(1791296303000)\/",
+    "ManagerName": "ClientUnitSchemaManager",
+    "Caption": "AcdDataBindingMixin",
+    "DependsOn": []
+  }
+}

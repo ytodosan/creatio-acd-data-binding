@@ -1,0 +1,15 @@
+﻿{
+  "Descriptor": {
+    "UId": "332cb33d-deac-5973-8b94-9979fb7fbd23",
+    "Name": "BaseSectionV2",
+    "ModifiedOnUtc": "\/Date(1791296303000)\/",
+    "Parent": {
+      "UId": "7912fb69-4fee-429f-8b23-93943c35d66d",
+      "Name": "BaseSectionV2"
+    },
+    "ExtendParent": true,
+    "ManagerName": "ClientUnitSchemaManager",
+    "Caption": "Section base schema",
+    "DependsOn": []
+  }
+}

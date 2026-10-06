@@ -1,0 +1,24 @@
+define("SysAdminOperationSectionV2", [], function() {
+	return {
+		diff: /**SCHEMA_DIFF*/[
+			{
+				"operation": "insert",
+				"name": "AcdBindOperationButton",
+				"parentName": "CombinedModeActionButtonsCardContainer",
+				"propertyName": "items",
+				"index": 5,
+				"values": {
+					"itemType": Terrasoft.ViewItemType.BUTTON,
+					"style": Terrasoft.controls.ButtonEnums.style.BLUE,
+					"caption": {"bindTo": "getBindOperationButtonCaption"},
+					"click": {"bindTo": "onBindOperationButtonClick"},
+					"classes": {
+						"textClass": ["actions-button-margin-right"],
+						"wrapperClass": ["actions-button-margin-right", "acd-data-binding-button"]
+					},
+					"visible": {"bindTo": "getBindDataButtonVisible"}
+				}
+			}
+		]/**SCHEMA_DIFF*/
+	};
+});

@@ -1,0 +1,15 @@
+﻿{
+  "Descriptor": {
+    "UId": "0b7b3fb7-d61b-5e4f-9a37-aad32d99cf39",
+    "Name": "BaseLookupConfigurationSection",
+    "ModifiedOnUtc": "\/Date(1791296303000)\/",
+    "Parent": {
+      "UId": "c8c39e3b-de05-4d01-814a-45c7981e139f",
+      "Name": "BaseLookupConfigurationSection"
+    },
+    "ExtendParent": true,
+    "ManagerName": "ClientUnitSchemaManager",
+    "Caption": "Base lookup configuration section",
+    "DependsOn": []
+  }
+}
