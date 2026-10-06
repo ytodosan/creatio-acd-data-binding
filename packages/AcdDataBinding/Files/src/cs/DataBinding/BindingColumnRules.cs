@@ -37,6 +37,12 @@ namespace AcdDataBinding.DataBinding {
 
 		private static readonly string[] DefaultKeyColumns = { "Id" };
 
+		/// <summary>
+		/// Lookup values (and other schemas without a dedicated rule) force-update Name, so a renamed value
+		/// reaches every environment where the package is installed. Schemas without a Name column are unaffected.
+		/// </summary>
+		private static readonly string[] DefaultForceUpdateColumns = { "Name" };
+
 		private static readonly Dictionary<string, BindingColumnRule> Rules =
 			new Dictionary<string, BindingColumnRule>(StringComparer.OrdinalIgnoreCase) {
 				["Lookup"] = new BindingColumnRule(DefaultKeyColumns,
@@ -73,13 +79,13 @@ namespace AcdDataBinding.DataBinding {
 		#region Methods: Public
 
 		/// <summary>
-		/// Returns the rule for the schema, or the default rule (key is Id, nothing is force-updated).
+		/// Returns the rule for the schema, or the default rule (key is Id, Name is force-updated).
 		/// </summary>
 		public static BindingColumnRule GetRule(string schemaName) {
 			BindingColumnRule rule;
 			return !string.IsNullOrEmpty(schemaName) && Rules.TryGetValue(schemaName, out rule)
 				? rule
-				: new BindingColumnRule(DefaultKeyColumns, null);
+				: new BindingColumnRule(DefaultKeyColumns, DefaultForceUpdateColumns);
 		}
 
 		public static bool IsSkipped(string columnName) {

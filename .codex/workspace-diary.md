@@ -43,3 +43,10 @@ Decision: The user chose to drop the styling. The mixin and the 10 button schema
 Discovery: For most classic pages here, adding a class to the diff's "classes.wrapperClass" doesn't reach the rendered button. Only BaseLookupConfigurationSection honored it. Cause not investigated.
 Files: packages/AcdDataBinding/Schemas/AcdDataBindingMixin/AcdDataBindingMixin.js, packages/AcdDataBinding/Schemas/*/<schema>.js
 Impact: Buttons look like the platform defaults again. Revisit only if a reliable styling hook for these pages turns up.
+
+## 2026-10-06 - Forced update on Name for lookup values
+Context: Bound lookup values (Bind data, Bind all data) had no forced-update columns, so a renamed value never reached environments where the package was already installed, even after actualizing the data.
+Decision: The default rule in BindingColumnRules (used by every schema without a dedicated rule: regular lookups and SysAdminUnit roles) now force-updates Name. DataBindingStore applies it per bound column, so schemas without Name are unaffected. Dedicated rules (SysProfileData, SysSettings*, SysAdminOperation*, SysWorkplace*, Lookup) are unchanged.
+Discovery: Trade-off: installing the package overwrites a Name renamed locally on the target environment. Roles share the default rule, so their Name is forced too (the user was told and can opt out). Re-binding through the tool rewrites the binding's column settings (SavePackageSchemaDataColumns deletes and recreates them), so manual designer tweaks are lost on re-bind.
+Files: packages/AcdDataBinding/Files/src/cs/DataBinding/BindingColumnRules.cs, tests/AcdDataBinding/DataBinding/BindingColumnRulesTests.cs, README.md
+Impact: 32 tests pass on net472, and both frameworks build. Deployed to Y1DEV (restart). Existing bindings change only when re-bound.

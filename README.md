@@ -39,6 +39,10 @@ own C# used `ServiceStack.Text`, which .NET Creatio doesn't ship. This package m
 service.
 
 Differences from the platform data designer:
+- Lookup values (and roles) are bound with **forced update on `Name`**, so a renamed value reaches every
+  environment where the package is installed. System settings, operations, workplaces and the `Lookup`
+  registration keep their own force-update rules. Re-binding resets column settings changed by hand in the
+  data designer.
 - Only columns that belong to packages in the target package's hierarchy are bound. Other columns are
   reported as warnings: the platform's automatic package dependency handling isn't available to
   configuration code.

@@ -43,14 +43,36 @@ namespace AcdDataBinding.Tests.DataBinding {
 		}
 
 		[Test]
-		[Description("An unknown schema (a regular lookup) uses Id as key and force-updates nothing")]
+		[Description("An unknown schema (a regular lookup) uses Id as key and force-updates Name")]
 		public void GetRule_UnknownSchema_ReturnsDefault() {
 			// Act
 			BindingColumnRule rule = BindingColumnRules.GetRule("OtpYachtStatus");
 
 			// Assert
 			rule.KeyColumns.Should().BeEquivalentTo(new[] { "Id" }, because: "lookup values are matched by Id");
-			rule.ForceUpdateColumns.Should().BeEmpty(because: "the original tool force-updates only known schemas");
+			rule.ForceUpdateColumns.Should().BeEquivalentTo(new[] { "Name" },
+				because: "a renamed lookup value must reach every environment where the package is installed");
+		}
+
+		[Test]
+		[Description("Roles use the default rule, so their Name is force-updated as well")]
+		public void GetRule_SysAdminUnit_ForcesName() {
+			// Act
+			BindingColumnRule rule = BindingColumnRules.GetRule("SysAdminUnit");
+
+			// Assert
+			rule.ForceUpdateColumns.Should().Contain("name",
+				because: "column names are matched case-insensitively and roles have no dedicated rule");
+		}
+
+		[Test]
+		[Description("A dedicated rule without Name (column setup) doesn't get the default Name forced update")]
+		public void GetRule_SysProfileData_DoesNotForceName() {
+			// Act
+			BindingColumnRule rule = BindingColumnRules.GetRule("SysProfileData");
+
+			// Assert
+			rule.ForceUpdateColumns.Should().NotContain("Name", because: "dedicated rules are kept as they are");
 		}
 
 		[TestCase("CreatedBy")]
