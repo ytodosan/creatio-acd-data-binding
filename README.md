@@ -16,7 +16,8 @@ It's a port of the GlbDataBinding package, which only works on .NET Framework.
 | System settings | Bind setting | `SysSettings` + `SysSettingsValue` |
 | System operations | Bind operation | `SysAdminOperation` + `SysAdminOperationGrantee` |
 | Organizational roles | Bind role | `SysAdminUnit` |
-| Workplaces | Bind workplace | `SysWorkplace` + `SysModuleInWorkplace` + `SysAdminUnitInWorkplace` |
+| Workplaces | Bind workplace → Bind new workplace | `SysWorkplace` + `SysModuleInWorkplace` + `SysAdminUnitInWorkplace` |
+| Workplaces | Bind workplace → Bind sections | `SysModuleInWorkplace` only (for workplaces that already exist on the target, such as ones installed with Creatio apps) |
 | Section and detail view menus | Bind columns setup, Restore columns setup | `SysProfileData` |
 
 The actions are visible to users with the `CanManageSolution` system operation. Bindings are saved to a

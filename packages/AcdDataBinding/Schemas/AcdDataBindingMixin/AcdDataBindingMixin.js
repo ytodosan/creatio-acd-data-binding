@@ -219,6 +219,14 @@ define("AcdDataBindingMixin", ["AcdDataBindingMixinResources", "RightUtilities"]
 				return resources.localizableStrings.BindWorkplaceButtonCaption;
 			},
 
+			getBindNewWorkplaceCaption: function() {
+				return resources.localizableStrings.BindNewWorkplaceCaption;
+			},
+
+			getBindWorkplaceSectionsCaption: function() {
+				return resources.localizableStrings.BindWorkplaceSectionsCaption;
+			},
+
 			onClearProfileDataClick: function() {
 				var caption = this.get("Caption") || this.get("SeparateModeActionsButtonHeaderMenuItemCaption") || "";
 				var objectType = this.get("Caption") ? resources.localizableStrings.DetailCaption :
@@ -477,7 +485,11 @@ define("AcdDataBindingMixin", ["AcdDataBindingMixinResources", "RightUtilities"]
 					this);
 			},
 
-			onBindWorkplaceButtonClick: function() {
+			/**
+			 * Binds a workplace created in this environment: its header, its sections and the roles that can
+			 * use it.
+			 */
+			onBindNewWorkplaceClick: function() {
 				this._bindSchemaName = "SysWorkplace";
 				var recordInfo = this.getBindRecordInfo();
 				var code = this.generateCodeForDataBinding(recordInfo.name, recordInfo.id);
@@ -491,17 +503,10 @@ define("AcdDataBindingMixin", ["AcdDataBindingMixinResources", "RightUtilities"]
 								name: this._bindSchemaName + "_" + code,
 								uId: recordInfo.id
 							}),
-							this.createBinding({
-								schemaName: "SysModuleInWorkplace",
-								filterColumn: this._bindSchemaName,
-								recordId: recordInfo.id,
-								name: "SysModuleInWorkplace_" + code,
-								uId: this.calculateUId("SysModuleInWorkplace" + recordInfo.id),
-								isRelated: true
-							}),
+							this.createWorkplaceSectionsBinding(recordInfo, code, true),
 							this.createBinding({
 								schemaName: "SysAdminUnitInWorkplace",
-								filterColumn: this._bindSchemaName,
+								filterColumn: "SysWorkplace",
 								recordId: recordInfo.id,
 								name: "SysAdminUnitInWorkplace_" + code,
 								uId: this.calculateUId("SysAdminUnitInWorkplace" + recordInfo.id),
@@ -510,6 +515,37 @@ define("AcdDataBindingMixin", ["AcdDataBindingMixinResources", "RightUtilities"]
 						]);
 					},
 					this);
+			},
+
+			/**
+			 * Binds only the sections of a workplace, for workplaces that already exist in the target
+			 * environment (for example, workplaces installed with Creatio applications). The workplace header
+			 * and its roles are not bound.
+			 */
+			onBindWorkplaceSectionsClick: function() {
+				this._bindSchemaName = "SysModuleInWorkplace";
+				var recordInfo = this.getBindRecordInfo();
+				var code = this.generateCodeForDataBinding(recordInfo.name, recordInfo.id);
+				Terrasoft.chain(
+					this.selectPackage,
+					function() {
+						this.saveBindings([this.createWorkplaceSectionsBinding(recordInfo, code, false)]);
+					},
+					this);
+			},
+
+			/**
+			 * Same name and UId in both workplace actions, so binding sections again updates one data binding.
+			 */
+			createWorkplaceSectionsBinding: function(recordInfo, code, isRelated) {
+				return this.createBinding({
+					schemaName: "SysModuleInWorkplace",
+					filterColumn: "SysWorkplace",
+					recordId: recordInfo.id,
+					name: "SysModuleInWorkplace_" + code,
+					uId: this.calculateUId("SysModuleInWorkplace" + recordInfo.id),
+					isRelated: isRelated
+				});
 			},
 
 			saveBindings: function(bindings) {

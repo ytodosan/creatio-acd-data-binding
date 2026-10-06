@@ -11,7 +11,18 @@ define("SysWorkplaceSectionV2", [], function() {
 					"itemType": Terrasoft.ViewItemType.BUTTON,
 					"style": Terrasoft.controls.ButtonEnums.style.BLUE,
 					"caption": {"bindTo": "getBindWorkplaceButtonCaption"},
-					"click": {"bindTo": "onBindWorkplaceButtonClick"},
+					"menu": {
+						"items": [
+							{
+								"caption": {"bindTo": "getBindNewWorkplaceCaption"},
+								"click": {"bindTo": "onBindNewWorkplaceClick"}
+							},
+							{
+								"caption": {"bindTo": "getBindWorkplaceSectionsCaption"},
+								"click": {"bindTo": "onBindWorkplaceSectionsClick"}
+							}
+						]
+					},
 					"classes": {
 						"textClass": ["actions-button-margin-right"],
 						"wrapperClass": ["actions-button-margin-right"]

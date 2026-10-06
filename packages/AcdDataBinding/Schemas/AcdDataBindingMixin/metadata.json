@@ -153,6 +153,20 @@
           "A3": "c6fe3061-9604-5500-8c50-f3a0e5a4cfcc",
           "A4": "c6fe3061-9604-5500-8c50-f3a0e5a4cfcc",
           "A5": "2b598af8-93f5-4daf-8e78-83c5c8a88cae"
+        },
+        {
+          "UId": "9a446e18-9dcc-559d-86f2-815cc241d667",
+          "A2": "BindNewWorkplaceCaption",
+          "A3": "c6fe3061-9604-5500-8c50-f3a0e5a4cfcc",
+          "A4": "c6fe3061-9604-5500-8c50-f3a0e5a4cfcc",
+          "A5": "2b598af8-93f5-4daf-8e78-83c5c8a88cae"
+        },
+        {
+          "UId": "fb243eb2-463a-514d-b477-4397c3fa53f8",
+          "A2": "BindWorkplaceSectionsCaption",
+          "A3": "c6fe3061-9604-5500-8c50-f3a0e5a4cfcc",
+          "A4": "c6fe3061-9604-5500-8c50-f3a0e5a4cfcc",
+          "A5": "2b598af8-93f5-4daf-8e78-83c5c8a88cae"
         }
       ],
       "B3": [],
