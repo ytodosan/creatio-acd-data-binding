@@ -85,3 +85,10 @@ Decision: Set app-descriptor Name, README, CHANGELOG and the script docs to "Dat
 Discovery: Extracting the zip confirmed name, maintainer, version 1.0.0, both DLLs and the 14 schemas.
 Files: packages/AcdDataBinding/Files/app-descriptor.json, README.md, CHANGELOG.md, build-release.ps1
 Impact: Ready for a test install on a clean environment.
+
+## 2026-10-07 - Y2TEST: "service error" was a missing restart after install
+Context: The user reported binding failing with a service error on Y2TEST, a clean .NET Framework environment in DB mode (FSM off), where release 1.0.0 was installed from the archive. The app record (SysInstalledApp) shows "Data Binding kit for Creatio" 1.0.0, and the package is locked (InstallType 1, maintainer Creatio Academy).
+Decision: Reproduced with Claude in Chrome (the user's authenticated session). A direct POST to /0/rest/AcdDataBindingService/GetPackages returned HTTP 404. Y2TEST's Application.log showed the last Application_Start at 17:25, while the package was installed at 17:29, so the DLL had never loaded. After `clio restart -e Y2TEST --wait-ready`: GetPackages returned 200 (candidates: UsrDataBindingTests). Bind lookup through the UI (search "Car drive", package UsrDataBindingTests) showed "Data was bound successfully" and saved Lookup_CarDriveTypes with the Lookup rule (Name, Description, SysEntitySchemaUId, SysPageSchemaUId forced). A SaveBindings call identical to Bind data, for UsrCarDriveType "Diesel", saved UsrCarDriveType_Diesel with Name forced.
+Discovery: Installing an assembly package doesn't load its DLL. The client schemas (buttons) work immediately, but the web service is a 404 until the app restarts. Y2TEST logs are at C:\Windows\Temp\Creatio\Default Web Site\Y2TEST\Log. Y2TEST's SQL Server accepts Windows auth (sqlcmd -E). In the classic Lookups section, links open LookupEditPage; the records grid uses an encoded #LookupSectionModule route.
+Files: README.md (restart step marked as required; removed the stale button-style sentence)
+Impact: No code defect found in the release. A candidate improvement is a clear client message when the service returns 404 ("restart Creatio after installing").

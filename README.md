@@ -25,8 +25,7 @@ It's a port of the GlbDataBinding package, which only works on .NET Framework.
 
 The actions are visible to users with the `CanManageSolution` system operation. Bindings are saved to a
 package with the current maintainer (the `Maintainer` system setting) that is editable and has the bound
-schema in its hierarchy. The buttons have rounder corners and a slightly deeper blue, so they're easy to
-tell apart from the original package's buttons.
+schema in its hierarchy.
 
 ## How it works
 
@@ -108,7 +107,8 @@ who binds data needs the `CanManageSolution` system operation.
 clio push-pkg "release/Data-Binding-kit-for-Creatio-1.0.0.zip" -e <ENV>
 ```
 
-Then restart the application so it loads `AcdDataBinding.dll` (`clio restart -e <ENV> --wait-ready`, or recycle
+**Then restart the application. This step is required:** until the restart, the buttons appear but every
+action fails, because the server returns 404 for `AcdDataBindingService`. Restart so it loads `AcdDataBinding.dll` (`clio restart -e <ENV> --wait-ready`, or recycle
 the IIS application pool), and hard-reload the browser (Ctrl+Shift+R).
 
 Check: Application Hub lists "Data Binding kit for Creatio" 1.0.0. Lookups shows **Bind lookup**, a system
