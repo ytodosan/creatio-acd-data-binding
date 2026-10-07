@@ -1,0 +1,10 @@
+﻿{
+  "Descriptor": {
+    "UId": "209c12c1-8b42-5713-a606-0446287970e1",
+    "Name": "AcdColumnSetupRepository",
+    "ModifiedOnUtc": "\/Date(1791392021000)\/",
+    "ManagerName": "SourceCodeSchemaManager",
+    "Caption": "AcdColumnSetupRepository",
+    "DependsOn": []
+  }
+}

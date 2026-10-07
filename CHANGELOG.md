@@ -3,6 +3,16 @@
 All notable changes to **Data Binding kit for Creatio** (package `AcdDataBinding`, maintainer Creatio Academy).
 Versions follow the X.Y.Z format required by Creatio Marketplace.
 
+## 1.1.0 - 2026-10-07 (branch general-package, experimental)
+
+### Changed
+- The package is a **General** package instead of an Assembly package. Its C# is delivered as source-code schemas
+  (`AcdDataBindingService`, `AcdDataBindingStore`, ...) and compiled by the installer, like the original
+  GlbDataBinding. Goal: the app works right after installation, with no restart or package compile. Trade-offs:
+  installation compiles the configuration (slower, briefly reloads the app), and Creatio Marketplace asks for
+  functionality in an assembly package.
+- The release ships no prebuilt DLLs.
+
 ## 1.0.0 - 2026-10-06
 
 First release.

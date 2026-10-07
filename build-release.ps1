@@ -4,8 +4,10 @@
 
 .DESCRIPTION
     1. Checks that the app version (Files/app-descriptor.json) matches the package version (descriptor.json).
-    2. Builds AcdDataBinding.dll for .NET Framework (dev-nf) and .NET (dev-n8).
-    3. Packs a clean copy of the package (no obj, *.pdb or *.deps.json) into AcdDataBinding.gz with clio.
+    2. Builds the package for .NET Framework (dev-nf) and .NET (dev-n8) as a compile check.
+    3. Packs a clean copy of the package into AcdDataBinding.gz with clio. An Assembly package ("Type": 1 in
+       descriptor.json) ships its prebuilt DLLs. A General package (no "Type") ships source-code schemas only: the
+       installer compiles them, so the prebuilt DLLs and local build files (*.csproj, Directory.Build.*) are left out.
     4. Puts the .gz at the root of release/<App-name>-<X.Y.Z>.zip, as Marketplace requires, and keeps a copy
        as release/AcdDataBinding.gz for direct installs (clio push-pkg).
 
@@ -30,10 +32,18 @@ foreach ($configuration in "dev-n8", "dev-nf") {
     if ($LASTEXITCODE -ne 0) { throw "Build failed for $configuration." }
 }
 
+$isAssemblyPackage = $package.Type -eq 1
+
 # Creatio redirects older Terrasoft assembly versions to the installed one, never newer ones. An assembly built
 # against a Creatio newer than RequiredPlatformVersion fails to load there, and its web service returns 404.
+# Only an Assembly package ships prebuilt DLLs; a General package is compiled by the installer.
 $required = [version]$app.RequiredPlatformVersion
-foreach ($dll in "Files\Bin\$packageName.dll", "Files\Bin\netstandard\$packageName.dll") {
+$shippedDlls = if ($isAssemblyPackage) {
+    @("Files\Bin\$packageName.dll", "Files\Bin\netstandard\$packageName.dll")
+} else {
+    @()
+}
+foreach ($dll in $shippedDlls) {
     $dllPath = Join-Path $packageDir $dll
     $references = [Reflection.Assembly]::LoadFile($dllPath).GetReferencedAssemblies() |
         Where-Object { $_.Name -like "Terrasoft.*" -and $_.Name -ne "Terrasoft.ServiceModel.Primitives" }
@@ -55,6 +65,11 @@ $stagedPackage = Join-Path $stagingDir $packageName
 Copy-Item $packageDir $stagedPackage -Recurse
 Remove-Item (Join-Path $stagedPackage "Files\obj") -Recurse -Force -ErrorAction SilentlyContinue
 Get-ChildItem $stagedPackage -Recurse -Include *.pdb, *.deps.json | Remove-Item -Force
+if (-not $isAssemblyPackage) {
+    Remove-Item (Join-Path $stagedPackage "Files\Bin") -Recurse -Force -ErrorAction SilentlyContinue
+    Get-ChildItem (Join-Path $stagedPackage "Files") -File -Include *.csproj, Directory.Build.* -Recurse |
+        Remove-Item -Force
+}
 
 $gzPath = Join-Path $stagingDir "$packageName.gz"
 clio generate-pkg-zip $stagedPackage -d $gzPath

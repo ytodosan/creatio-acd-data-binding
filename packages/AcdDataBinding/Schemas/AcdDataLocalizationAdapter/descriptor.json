@@ -1,0 +1,10 @@
+﻿{
+  "Descriptor": {
+    "UId": "c57ae18b-5df5-535b-b4e4-94f722effeed",
+    "Name": "AcdDataLocalizationAdapter",
+    "ModifiedOnUtc": "\/Date(1791392021000)\/",
+    "ManagerName": "SourceCodeSchemaManager",
+    "Caption": "AcdDataLocalizationAdapter",
+    "DependsOn": []
+  }
+}

@@ -1,0 +1,10 @@
+﻿{
+  "Descriptor": {
+    "UId": "2d783ef7-0ef6-5c86-a9f6-22ce7035bced",
+    "Name": "AcdDataBindingStore",
+    "ModifiedOnUtc": "\/Date(1791392021000)\/",
+    "ManagerName": "SourceCodeSchemaManager",
+    "Caption": "AcdDataBindingStore",
+    "DependsOn": []
+  }
+}

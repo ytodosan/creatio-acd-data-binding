@@ -1,7 +1,11 @@
 # Data Binding kit for Creatio
 
-Package `AcdDataBinding` · maintainer Creatio Academy · version 1.0.0 · minimum Creatio 8.3.0 ·
+Package `AcdDataBinding` · maintainer Creatio Academy · version 1.1.0 · minimum Creatio 8.3.0 ·
 see [CHANGELOG.md](CHANGELOG.md).
+
+> **Branch `general-package`:** experimental 1.1.0 delivered as a General package (source-code schemas compiled by
+> the installer, like GlbDataBinding) to make the app work right after installation. `main` stays an Assembly
+> package, as Creatio Marketplace requires.
 
 Adds "Bind data" actions to Creatio **classic UI** system pages, so configuration data can be captured
 as data bindings in a user package. Works on **.NET Framework and .NET** Creatio.

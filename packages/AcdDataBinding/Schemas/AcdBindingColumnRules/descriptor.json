@@ -1,0 +1,10 @@
+﻿{
+  "Descriptor": {
+    "UId": "2cc92d4f-05c4-5ae1-bba4-63279c88159d",
+    "Name": "AcdBindingColumnRules",
+    "ModifiedOnUtc": "\/Date(1791392021000)\/",
+    "ManagerName": "SourceCodeSchemaManager",
+    "Caption": "AcdBindingColumnRules",
+    "DependsOn": []
+  }
+}

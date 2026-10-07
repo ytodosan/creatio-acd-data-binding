@@ -1,0 +1,10 @@
+﻿{
+  "Descriptor": {
+    "UId": "81dd67e1-9b72-5321-b57f-1d2ee65ddd5b",
+    "Name": "AcdBindingPackageProvider",
+    "ModifiedOnUtc": "\/Date(1791392021000)\/",
+    "ManagerName": "SourceCodeSchemaManager",
+    "Caption": "AcdBindingPackageProvider",
+    "DependsOn": []
+  }
+}
