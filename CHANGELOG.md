@@ -21,5 +21,9 @@ First release.
   per request and 10,000 record ids per binding.
 
 ### Compatibility
-- Minimum Creatio version: 10.0.0. Verified on Creatio 10.0 (.NET Framework, Microsoft SQL Server).
-- Ships only `AcdDataBinding.dll` for each runtime; no third-party assemblies.
+- Minimum Creatio version: 8.3.0. Verified on Creatio 10.0 (.NET Framework, Microsoft SQL Server); install tested on Creatio 8.3.4 (.NET Framework, cloud).
+- Ships only `AcdDataBinding.dll` for each runtime; no third-party assemblies. The .NET Framework assembly is
+  built against Creatio 8.3.0 and references only Terrasoft.Core, Terrasoft.Common, Terrasoft.Web.Common and
+  Common.Logging, which Creatio redirects to the installed versions.
+- If the service is unreachable (for example, the app's server code isn't active yet), the browser console logs
+  the failing call (method, URL, HTTP status) and the error message lists the possible causes.

@@ -1,6 +1,6 @@
 # Data Binding kit for Creatio
 
-Package `AcdDataBinding` · maintainer Creatio Academy · version 1.0.0 · minimum Creatio 10.0.0 ·
+Package `AcdDataBinding` · maintainer Creatio Academy · version 1.0.0 · minimum Creatio 8.3.0 ·
 see [CHANGELOG.md](CHANGELOG.md).
 
 Adds "Bind data" actions to Creatio **classic UI** system pages, so configuration data can be captured
@@ -57,6 +57,12 @@ Differences from the platform data designer:
 This is a [clio](https://github.com/Advance-Technologies-Foundation/clio) workspace.
 Reference binaries go to `.application/` (not committed):
 
+- `.application/net-framework-floor/core-bin`: the `lib/net40` DLLs of the `CreatioSDK` NuGet package for the
+  **minimum supported Creatio** (8.3.0.3074), plus `Common.Logging.dll` / `Common.Logging.Core.dll` 3.4.1. The
+  .NET Framework DLL is built against these: Creatio redirects older Terrasoft versions to the installed one,
+  never newer ones, so a DLL built against a newer Creatio fails to load on older versions.
+  `build-release.ps1` refuses to build if a shipped DLL references a version newer than the minimum.
+
 - `.application/net-framework/core-bin`, `packages`, `bin`: the `bin`, `Terrasoft.Configuration/Pkg` and
   `Terrasoft.Configuration/bin` folders of a .NET Framework Creatio
 - `.application/net-core/core-bin`: the `lib/netstandard2.0` DLLs of the `CreatioSDK` NuGet package
@@ -110,6 +116,17 @@ clio push-pkg "release/Data-Binding-kit-for-Creatio-1.0.0.zip" -e <ENV>
 **Then restart the application. This step is required:** until the restart, the buttons appear but every
 action fails, because the server returns 404 for `AcdDataBindingService`. Restart so it loads `AcdDataBinding.dll` (`clio restart -e <ENV> --wait-ready`, or recycle
 the IIS application pool), and hard-reload the browser (Ctrl+Shift+R).
+
+**If binding still fails with "service was not found (HTTP 404)"** after the restart, the server code isn't
+active yet. Compile the package, then reload the browser:
+
+```bash
+clio compile-package AcdDataBinding -e <ENV> --wait
+```
+
+(or Configuration → Compile). This was needed on a Creatio 8.3.4 cloud environment, where installing and
+`clio restart` weren't enough. The browser console shows the exact URL and status of the failing call
+(`[Data Binding kit] ... failed: HTTP 404 ...`).
 
 Check: Application Hub lists "Data Binding kit for Creatio" 1.0.0. Lookups shows **Bind lookup**, a system
 setting page shows **Bind setting**, and a workplace shows **Bind workplace** with two options.

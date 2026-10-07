@@ -47,6 +47,12 @@
 			</PropertyGroup>
 		</When>
 	</Choose>
+	<!-- Build the .NET Framework assembly against the oldest supported Creatio (RequiredPlatformVersion in
+	     app-descriptor.json). Creatio redirects older Terrasoft assembly versions to the installed one, never
+	     newer ones, so an assembly built against a newer Creatio fails to load on older versions. -->
+	<PropertyGroup Label="Minimum supported Creatio" Condition="'$(TargetFramework)' == 'net472' And Exists('$(MSBuildThisFileDirectory)../../../.application/net-framework-floor/core-bin')">
+		<CoreLibPath>$(MSBuildThisFileDirectory)../../../.application/net-framework-floor/core-bin</CoreLibPath>
+	</PropertyGroup>
 	<PropertyGroup>
 		<OutputPath>$(RelativeCurrentPkgFolderPath)$(StandalonePackageAssemblyPath)</OutputPath>
 	</PropertyGroup>
@@ -268,19 +274,6 @@
 			<Private>False</Private>
 		</Reference>
 
-		<!--    Microsoft.Extensions.DependencyInjection is included in NetFramework and ommited in NET8 -->
-		<Reference Condition="'$(TargetFramework)' == 'net472'" Include="Microsoft.Extensions.DependencyInjection">
-			<HintPath>$(CoreLibPath)/Microsoft.Extensions.DependencyInjection.dll</HintPath>
-			<SpecificVersion>False</SpecificVersion>
-			<Private>False</Private>
-		</Reference>
-		<!-- The .NET host provides Microsoft.Extensions.DependencyInjection: compile against it, don't ship it. -->
-		<PackageReference Condition="'$(TargetFramework)' == 'netstandard2.0'" Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" ExcludeAssets="runtime" PrivateAssets="all" />
-		<Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
-			<HintPath>$(CoreLibPath)/Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
-			<SpecificVersion>False</SpecificVersion>
-			<Private>False</Private>
-		</Reference>
 		<Reference Include="System.Threading.Tasks.Extensions">
 			<HintPath>$(CoreLibPath)/System.Threading.Tasks.Extensions.dll</HintPath>
 			<SpecificVersion>False</SpecificVersion>

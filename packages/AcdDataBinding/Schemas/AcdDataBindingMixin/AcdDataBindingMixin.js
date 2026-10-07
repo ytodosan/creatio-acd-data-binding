@@ -92,18 +92,48 @@ define("AcdDataBindingMixin", ["AcdDataBindingMixinResources", "RightUtilities"]
 				return binding;
 			},
 
-			selectPackage: function(callback, scope) {
-				this.showBodyMask({showHidden: true});
+			/**
+			 * Calls AcdDataBindingService. An HTTP error is logged to the browser console (method, URL, status) and
+			 * returned as an unsuccessful response with a message, the same shape as an error reported by the
+			 * service itself. A 404 means the service isn't available: the app isn't installed, Creatio wasn't
+			 * restarted after the installation, or the app's server code failed to load.
+			 */
+			callDataBindingService: function(methodName, data, callback) {
 				this.callService({
 					serviceName: "AcdDataBindingService",
-					methodName: "GetPackages",
-					data: {
-						schemaName: this._bindSchemaName
+					methodName: methodName,
+					data: data
+				}, function(response, request) {
+					var status = request && request.status;
+					if (status && status !== 200) {
+						response = this.createServiceErrorResponse(methodName, status);
 					}
+					callback.call(this, response || {});
+				}, this);
+			},
+
+			createServiceErrorResponse: function(methodName, status) {
+				var message = status === 404
+					? resources.localizableStrings.ServiceUnavailableMessage
+					: Ext.String.format(resources.localizableStrings.ServiceRequestFailedMessage, status);
+				var url = Terrasoft.combinePath(Terrasoft.utils.uri.getConfigurationWebServiceBaseUrl(), "rest",
+					"AcdDataBindingService", methodName);
+				this.log("[Data Binding kit] " + methodName + " failed: HTTP " + status + " " + url + ". " + message,
+					Terrasoft.LogMessageType.ERROR);
+				return {
+					success: false,
+					message: message
+				};
+			},
+
+			selectPackage: function(callback, scope) {
+				this.showBodyMask({showHidden: true});
+				this.callDataBindingService("GetPackages", {
+					schemaName: this._bindSchemaName
 				}, function(response) {
 					this.hideBodyMask();
 					this.onLoadPackages(response, callback, scope);
-				}, this);
+				});
 			},
 
 			onLoadPackages: function(response, callback, scope) {
@@ -241,14 +271,9 @@ define("AcdDataBindingMixin", ["AcdDataBindingMixinResources", "RightUtilities"]
 
 			clearProfileData: function() {
 				this.showBodyMask({showHidden: true});
-				this.callService({
-					serviceName: "AcdDataBindingService",
-					methodName: "RestoreColumnSetup",
-					data: {
-						profileKey: this.getProfileKey()
-					}
+				this.callDataBindingService("RestoreColumnSetup", {
+					profileKey: this.getProfileKey()
 				}, function(response) {
-					response = response || {};
 					if (response.success) {
 						if (response.rowsAffected) {
 							this.applyDefaultColumnSetup();
@@ -265,7 +290,7 @@ define("AcdDataBindingMixin", ["AcdDataBindingMixinResources", "RightUtilities"]
 						});
 					}
 					this.hideBodyMask();
-				}, this);
+				});
 			},
 
 			applyDefaultColumnSetup: function() {
@@ -550,17 +575,13 @@ define("AcdDataBindingMixin", ["AcdDataBindingMixinResources", "RightUtilities"]
 
 			saveBindings: function(bindings) {
 				this.showBodyMask({showHidden: true});
-				this.callService({
-					serviceName: "AcdDataBindingService",
-					methodName: "SaveBindings",
-					data: {
-						packageUId: this._currentPackage.uId,
-						bindings: bindings
-					}
+				this.callDataBindingService("SaveBindings", {
+					packageUId: this._currentPackage.uId,
+					bindings: bindings
 				}, function(response) {
 					this.hideBodyMask();
-					this.showDataBindingDetailsWindow(response || {});
-				}, this);
+					this.showDataBindingDetailsWindow(response);
+				});
 			},
 
 			showDataBindingDetailsWindow: function(response) {

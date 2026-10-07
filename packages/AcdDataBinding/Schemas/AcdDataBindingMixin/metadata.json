@@ -167,6 +167,20 @@
           "A3": "c6fe3061-9604-5500-8c50-f3a0e5a4cfcc",
           "A4": "c6fe3061-9604-5500-8c50-f3a0e5a4cfcc",
           "A5": "2b598af8-93f5-4daf-8e78-83c5c8a88cae"
+        },
+        {
+          "UId": "d64d4c71-f5f5-5b32-9f2e-c30512952a38",
+          "A2": "ServiceUnavailableMessage",
+          "A3": "c6fe3061-9604-5500-8c50-f3a0e5a4cfcc",
+          "A4": "c6fe3061-9604-5500-8c50-f3a0e5a4cfcc",
+          "A5": "2b598af8-93f5-4daf-8e78-83c5c8a88cae"
+        },
+        {
+          "UId": "effa1286-0bd1-55ee-b865-9ca572a76607",
+          "A2": "ServiceRequestFailedMessage",
+          "A3": "c6fe3061-9604-5500-8c50-f3a0e5a4cfcc",
+          "A4": "c6fe3061-9604-5500-8c50-f3a0e5a4cfcc",
+          "A5": "2b598af8-93f5-4daf-8e78-83c5c8a88cae"
         }
       ],
       "B3": [],

@@ -30,6 +30,22 @@ foreach ($configuration in "dev-n8", "dev-nf") {
     if ($LASTEXITCODE -ne 0) { throw "Build failed for $configuration." }
 }
 
+# Creatio redirects older Terrasoft assembly versions to the installed one, never newer ones. An assembly built
+# against a Creatio newer than RequiredPlatformVersion fails to load there, and its web service returns 404.
+$required = [version]$app.RequiredPlatformVersion
+foreach ($dll in "Files\Bin\$packageName.dll", "Files\Bin\netstandard\$packageName.dll") {
+    $dllPath = Join-Path $packageDir $dll
+    $references = [Reflection.Assembly]::LoadFile($dllPath).GetReferencedAssemblies() |
+        Where-Object { $_.Name -like "Terrasoft.*" -and $_.Name -ne "Terrasoft.ServiceModel.Primitives" }
+    foreach ($reference in $references) {
+        $referenced = New-Object Version $reference.Version.Major, $reference.Version.Minor, $reference.Version.Build
+        if ($referenced -gt $required) {
+            throw "$dll references $($reference.Name) $($reference.Version), newer than the minimum Creatio " +
+                "version $required. Build against the minimum version's binaries (.application/net-framework-floor)."
+        }
+    }
+}
+
 $releaseDir = Join-Path $root "release"
 $stagingDir = Join-Path $releaseDir "staging"
 if (Test-Path $stagingDir) { Remove-Item $stagingDir -Recurse -Force }

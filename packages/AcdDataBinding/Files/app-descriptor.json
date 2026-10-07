@@ -6,7 +6,7 @@
   "IconName": "app-icon.svg",
   "Color": "#0058EF",
   "Version": "1.0.0",
-  "RequiredPlatformVersion": "10.0.0",
+  "RequiredPlatformVersion": "8.3.0",
   "MarketplaceLink": "",
   "DependsOn": [],
   "Code": "AcdDataBinding",

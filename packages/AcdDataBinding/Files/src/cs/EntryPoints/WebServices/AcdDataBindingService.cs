@@ -20,7 +20,7 @@ namespace AcdDataBinding.EntryPoints.WebServices {
 		#region Properties: Private
 
 		private static IDataBindingManager Manager =>
-			AcdDataBindingApp.AcdDataBindingApp.Instance.GetRequiredService<IDataBindingManager>();
+			AcdDataBindingApp.AcdDataBindingApp.Instance.DataBindingManager;
 
 		#endregion
 
