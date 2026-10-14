@@ -1,7 +1,7 @@
 {
   "Descriptor": {
     "UId": "2b598af8-93f5-4daf-8e78-83c5c8a88cae",
-    "PackageVersion": "1.0.0",
+    "PackageVersion": "1.0.1",
     "Name": "AcdDataBinding",
     "Type": 1,
     "ProjectPath": "Files/AcdDataBinding.csproj",

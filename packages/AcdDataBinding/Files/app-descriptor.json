@@ -5,7 +5,7 @@
   "Icon": "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIiBmaWxsPSJub25lIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj4KICA8ZWxsaXBzZSBjeD0iMTMiIGN5PSI4IiByeD0iOCIgcnk9IjMiLz4KICA8cGF0aCBkPSJNNSA4djZjMCAxLjY2IDMuNTggMyA4IDNzOC0xLjM0IDgtM1Y4Ii8+CiAgPHBhdGggZD0iTTUgMTR2NmMwIDEuNjYgMy41OCAzIDggMyIvPgogIDxwYXRoIGQ9Ik0yMCAyMi41bC0xLjI1IDEuMjVhMi40NyAyLjQ3IDAgMCAwIDMuNSAzLjVMMjMuNSAyNiIvPgogIDxwYXRoIGQ9Ik0yNCAyMS41bDEuMjUtMS4yNWEyLjQ3IDIuNDcgMCAwIDAtMy41LTMuNUwyMC41IDE4Ii8+CiAgPHBhdGggZD0iTTIwLjUgMjQuNWwzLTMiLz4KPC9zdmc+Cg==",
   "IconName": "app-icon.svg",
   "Color": "#0058EF",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "RequiredPlatformVersion": "8.3.0",
   "MarketplaceLink": "",
   "DependsOn": [],

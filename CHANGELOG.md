@@ -3,6 +3,19 @@
 All notable changes to **Data Binding kit for Creatio** (package `AcdDataBinding`, maintainer Creatio Academy).
 Versions follow the X.Y.Z format required by Creatio Marketplace.
 
+## 1.0.1 - 2026-10-14
+
+### Fixed
+- The app works right after installation, with no restart or package compile. Creatio reloads the application after
+  installing an Assembly package only if the package contains a compilable schema; the C# was all in Files/src, so
+  the web service stayed unloaded (HTTP 404) until a restart. The web service entry point is now the source-code
+  schema AcdDataBindingService (still compiled into AcdDataBinding.dll; the package stays an Assembly package).
+- build-release.ps1 refuses to build an Assembly package without a compilable schema.
+
+### Removed
+- The special "service was not found" error text. A failed call shows the usual request error, and the browser console
+  logs the method, URL and HTTP status.
+
 ## 1.0.0 - 2026-10-06
 
 First release.

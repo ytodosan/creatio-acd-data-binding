@@ -25,6 +25,21 @@ if ($app.Version -ne $package.PackageVersion) {
     throw "App version $($app.Version) and package version $($package.PackageVersion) differ."
 }
 
+# After installing an Assembly package, Creatio reloads the application (and so loads the package DLL and its web
+# services) only if the package has a compilable schema: Package.HasCompilableSchemas() in Terrasoft.Core, used by
+# SystemPackageOperations.IsRestartNeeded. These managers don't count; entity schemas don't count for Assembly packages.
+$nonCompilableManagers = "ClientUnitSchemaManager", "CampaignSchemaManager", "DcmSchemaManager", "ServiceSchemaManager",
+    "AddonSchemaManager", "CopilotIntentSchemaManager", "EntitySchemaManager"
+$compilableSchemas = Get-ChildItem (Join-Path $packageDir "Schemas") -Directory | Where-Object {
+    $schemaDescriptor = Join-Path $_.FullName "descriptor.json"
+    (Test-Path $schemaDescriptor) -and
+        ((Get-Content $schemaDescriptor -Raw | ConvertFrom-Json).Descriptor.ManagerName -notin $nonCompilableManagers)
+}
+if ($package.Type -eq 1 -and -not $compilableSchemas) {
+    throw "Assembly package has no compilable schema (for example, a source-code schema). Creatio won't reload " +
+        "the application after installation, so the package's web services stay unavailable until a restart."
+}
+
 foreach ($configuration in "dev-n8", "dev-nf") {
     dotnet build (Join-Path $packageDir "Files\$packageName.csproj") -c $configuration --nologo -v q
     if ($LASTEXITCODE -ne 0) { throw "Build failed for $configuration." }

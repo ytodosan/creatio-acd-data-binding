@@ -94,9 +94,7 @@ define("AcdDataBindingMixin", ["AcdDataBindingMixinResources", "RightUtilities"]
 
 			/**
 			 * Calls AcdDataBindingService. An HTTP error is logged to the browser console (method, URL, status) and
-			 * returned as an unsuccessful response with a message, the same shape as an error reported by the
-			 * service itself. A 404 means the service isn't available: the app isn't installed, Creatio wasn't
-			 * restarted after the installation, or the app's server code failed to load.
+			 * returned as an unsuccessful response, so the caller shows its usual request error.
 			 */
 			callDataBindingService: function(methodName, data, callback) {
 				this.callService({
@@ -113,16 +111,12 @@ define("AcdDataBindingMixin", ["AcdDataBindingMixinResources", "RightUtilities"]
 			},
 
 			createServiceErrorResponse: function(methodName, status) {
-				var message = status === 404
-					? resources.localizableStrings.ServiceUnavailableMessage
-					: Ext.String.format(resources.localizableStrings.ServiceRequestFailedMessage, status);
 				var url = Terrasoft.combinePath(Terrasoft.utils.uri.getConfigurationWebServiceBaseUrl(), "rest",
 					"AcdDataBindingService", methodName);
-				this.log("[Data Binding kit] " + methodName + " failed: HTTP " + status + " " + url + ". " + message,
+				this.log("[Data Binding kit] " + methodName + " failed: HTTP " + status + " " + url,
 					Terrasoft.LogMessageType.ERROR);
 				return {
-					success: false,
-					message: message
+					success: false
 				};
 			},
 

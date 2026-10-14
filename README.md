@@ -1,6 +1,6 @@
 # Data Binding kit for Creatio
 
-Package `AcdDataBinding` · maintainer Creatio Academy · version 1.0.0 · minimum Creatio 8.3.0 ·
+Package `AcdDataBinding` · maintainer Creatio Academy · version 1.0.1 · minimum Creatio 8.3.0 ·
 see [CHANGELOG.md](CHANGELOG.md).
 
 Adds "Bind data" actions to Creatio **classic UI** system pages, so configuration data can be captured
@@ -110,23 +110,21 @@ who binds data needs the `CanManageSolution` system operation.
 **clio:**
 
 ```bash
-clio push-pkg "release/Data-Binding-kit-for-Creatio-1.0.0.zip" -e <ENV>
+clio push-pkg "release/Data-Binding-kit-for-Creatio-1.0.1.zip" -e <ENV>
 ```
 
-**Then restart the application. This step is required:** until the restart, the buttons appear but every
-action fails, because the server returns 404 for `AcdDataBindingService`. Restart so it loads `AcdDataBinding.dll` (`clio restart -e <ENV> --wait-ready`, or recycle
-the IIS application pool), and hard-reload the browser (Ctrl+Shift+R).
+No restart or compile is needed: the installer reloads the application, which loads `AcdDataBinding.dll` and its
+web service. Hard-reload the browser (Ctrl+Shift+R) so it picks up the new pages.
 
-**If binding still fails with "service was not found (HTTP 404)"** after the restart, the server code isn't
-active yet. Compile the package, then reload the browser:
+Why this works: after installing an Assembly package, Creatio reloads the application only if the package has a
+**compilable schema** (`Package.HasCompilableSchemas()`, used by `SystemPackageOperations.IsRestartNeeded`).
+Client-unit, add-on and (for Assembly packages) entity schemas don't count, and C# in `Files/src` isn't a schema. The
+web service entry point is therefore kept as the source-code schema `AcdDataBindingService`, and `build-release.ps1`
+refuses to build an Assembly package without one. The installer also tries to load the shipped DLL; if it can't (for
+example, an incompatible Creatio version), it compiles the package from source on the target.
 
-```bash
-clio compile-package AcdDataBinding -e <ENV> --wait
-```
+If a call to the service still fails, the browser console logs it as `[Data Binding kit] <method> failed: HTTP
+<status> <url>`.
 
-(or Configuration → Compile). This was needed on a Creatio 8.3.4 cloud environment, where installing and
-`clio restart` weren't enough. The browser console shows the exact URL and status of the failing call
-(`[Data Binding kit] ... failed: HTTP 404 ...`).
-
-Check: Application Hub lists "Data Binding kit for Creatio" 1.0.0. Lookups shows **Bind lookup**, a system
+Check: Application Hub lists "Data Binding kit for Creatio" 1.0.1. Lookups shows **Bind lookup**, a system
 setting page shows **Bind setting**, and a workplace shows **Bind workplace** with two options.
